@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import auth from '../firebaseconfig.js'; // Adjust the path to your firebase config 
-import firestore from '@react-native-firebase/firestore';
+import auth from '../firebaseconfig.js';
+import { getFirestore, collection, query, where, getDocs, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { Colors } from '../constants/Colors'; // Import your Colors.ts
 
 const RegisterScreen = ({ navigation }: any) => {
   const [userId, setUserId] = useState('');
@@ -11,6 +12,8 @@ const RegisterScreen = ({ navigation }: any) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const themeColors = Colors.dark; // Force dark mode
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
@@ -23,33 +26,28 @@ const RegisterScreen = ({ navigation }: any) => {
       return;
     }
 
-     try {
-    //   // Step 1: Check if userId already exists
-      const userIdSnapshot = await firestore()
-        .collection('users')
-        .where('userId', '==', userId)
-        .get();
+    try {
+      const db = getFirestore();
+      const userIdQuery = query(collection(db, 'users'), where('userId', '==', userId));
+      const userIdSnapshot = await getDocs(userIdQuery);
 
       if (!userIdSnapshot.empty) {
         Alert.alert('Error', 'User ID already taken. Please choose another.');
         return;
       }
 
-      // Step 2: Create user in Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-     // Step 3: Store user details in Firestore
-      await firestore().collection('users').doc(userCredential.user.uid).set({
+      await setDoc(doc(collection(db, 'users'), userCredential.user.uid), {
         userId: userId,
         username: username,
         email: email,
         phone: phone,
-        createdAt: firestore.FieldValue.serverTimestamp(),
+        createdAt: serverTimestamp(),
       });
 
       Alert.alert('Success', 'Registration successful!');
       navigation.navigate('Login');
-
     } catch (error: any) {
       console.error(error);
       Alert.alert('Error', error.message);
@@ -57,61 +55,93 @@ const RegisterScreen = ({ navigation }: any) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Create an Account</Text>
+    <View style={[styles.container, { backgroundColor: themeColors.background }]}>
+      <Text style={[styles.header, { color: Colors.PRIMARY }]}>Create an Account</Text>
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, { borderColor: Colors.PRIMARY, color: themeColors.text }]}
         placeholder="User ID (Unique)"
+        placeholderTextColor={themeColors.icon}
         value={userId}
         onChangeText={setUserId}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { borderColor: Colors.PRIMARY, color: themeColors.text }]}
         placeholder="Full Name"
+        placeholderTextColor={themeColors.icon}
         value={username}
         onChangeText={setUsername}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { borderColor: Colors.PRIMARY, color: themeColors.text }]}
         placeholder="Email"
+        placeholderTextColor={themeColors.icon}
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { borderColor: Colors.PRIMARY, color: themeColors.text }]}
         placeholder="Phone"
+        placeholderTextColor={themeColors.icon}
         value={phone}
         onChangeText={setPhone}
         keyboardType="phone-pad"
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { borderColor: Colors.PRIMARY, color: themeColors.text }]}
         placeholder="Password"
+        placeholderTextColor={themeColors.icon}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { borderColor: Colors.PRIMARY, color: themeColors.text }]}
         placeholder="Confirm Password"
+        placeholderTextColor={themeColors.icon}
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         secureTextEntry
       />
 
-      <Button title="Register" onPress={handleRegister} />
-      <Text style={styles.link} onPress={() => navigation.navigate('Login')}>Already have an account? Login</Text>
+      <View style={styles.buttonWrapper}>
+        <Button title="Register" onPress={handleRegister} color={Colors.PRIMARY} />
+      </View>
+
+      <Text style={[styles.link, { color: Colors.PRIMARY }]} onPress={() => navigation.navigate('Login')}>
+        Already have an account? <Text style={{ fontWeight: 'bold' }}>Login</Text>
+      </Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  header: { fontSize: 24, textAlign: 'center', marginBottom: 20 },
-  input: { height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingLeft: 10 },
-  link: { color: 'blue', textAlign: 'center', marginTop: 10 },
-});
-
 export default RegisterScreen;
+
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center', padding: 24 },
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  input: {
+    height: 50,
+    borderWidth: 1.5,
+    borderRadius: 12,
+    marginBottom: 15,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    backgroundColor: '#222326', // Bluish-dark input bg
+  },
+  buttonWrapper: {
+    marginVertical: 20,
+  },
+  link: {
+    textAlign: 'center',
+    fontSize: 14,
+    marginTop: 10,
+    textDecorationLine: 'underline',
+  },
+});
