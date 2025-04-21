@@ -1,32 +1,39 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import auth from '../firebaseconfig.js'; 
-import { Colors } from '../constants/Colors'; // Import your color theme
+import { Colors } from '../constants/Colors'; 
+import Toast from 'react-native-simple-toast'; // Import Toast
 
 const LoginScreen = ({ navigation }: any) => {
+  
+//onst Toast = Toast(); // Initialize Toast
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const themeColors = Colors.dark; // FORCE dark theme
 
   const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) {
+      Toast.show('Please enter both email and password.', Toast.SHORT);
+      return;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      Alert.alert('Success', 'Login successful');
-      navigation.navigate('Home');
-    } catch (error: any) {
-      console.error(error);
-      Alert.alert('Error', error.message);
+        Toast.show('Login Successful. Welcome back 👋', Toast.SHORT);
+        navigation.navigate('Home');
+      } catch (error: any) {
+        console.error(error);
+      }
     }
-  };
-
-  const handleForgetPassword = () => {
-    navigation.navigate('Forget');
-  };
+      Toast.show('Login Failed. Something went wrong. Please try again.', Toast.SHORT);
 
   const handleRegister = () => {
     navigation.navigate('Register');
+  };
+  const handleForgetPassword = () => {
+    navigation.navigate('Forget');
   };
 
   return (
@@ -87,7 +94,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 16,
     fontSize: 16,
-    backgroundColor: '#222326', // Slight bluish-black shade to contrast
+    backgroundColor: '#222326',
   },
   buttonWrapper: {
     marginVertical: 20,

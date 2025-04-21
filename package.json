@@ -40,11 +40,15 @@
     "react-native-reanimated": "~3.16.1",
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.4.0",
+    "react-native-simple-toast": "^3.3.2",
+    "react-native-toast-message": "^2.3.0",
+    "react-native-toast-notification": "^1.1.2",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@react-native-community/cli": "latest",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.3.0",

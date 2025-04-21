@@ -21,9 +21,10 @@ const AppLayout = () => {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Forget" component={ForgetPassword} />
         <Stack.Screen name="Home" component={TabLayout} />
+
       </Stack.Navigator>
   );
-};
+}
 export default AppLayout;
 
 

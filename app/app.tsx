@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import Layout from '../app/_layout';  // adjust the path if needed
-
-
+import Layout from '../app/_layout';
 export default function App() {
   return (
+    <>
     <NavigationContainer>
       <Layout />
     </NavigationContainer>
+    </>
   );
 }
