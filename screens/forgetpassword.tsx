@@ -1,79 +1,72 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import auth from '../firebaseconfig.js';
-import { Colors } from '../constants/Colors'; // Import your Colors.ts
+import { Colors } from '../constants/Colors';
+import styles from '../styles/AuthStyles';
+import Toast from 'react-native-toast-message';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const ForgetPasswordScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
-  const themeColors = Colors.dark; // Force dark mode
 
   const handleForgetPassword = async () => {
-    if (!email) {
-      Alert.alert('Error', 'Please enter your email');
+    if (!email.trim()) {
+      Toast.show({
+        type: 'error',
+        text1: 'Input Error',
+        text2: 'Please enter your email address.',
+      });
       return;
     }
 
     try {
       await sendPasswordResetEmail(auth, email);
-      Alert.alert('Success', 'Password reset email sent! Please check your inbox.');
+      Toast.show({
+        type: 'success',
+        text1: 'Success 🎉',
+        text2: 'Password reset email sent!',
+      });
       navigation.goBack();
     } catch (error: any) {
       console.error(error);
-      Alert.alert('Error', error.message);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error.message || 'Something went wrong.',
+      });
     }
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: themeColors.background }]}>
-      <Text style={[styles.header, { color: Colors.PRIMARY }]}>Reset Your Password</Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>Reset Your Password</Text>
 
-      <TextInput
-        style={[styles.input, { borderColor: Colors.PRIMARY, color: themeColors.text }]}
-        placeholder="Enter your registered email"
-        placeholderTextColor={themeColors.icon}
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-
-      <View style={styles.buttonWrapper}>
-        <Button title="Send Reset Email" onPress={handleForgetPassword} color={Colors.PRIMARY} />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your registered email"
+          placeholderTextColor={Colors.dark.icon}
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+        />
+        <Ionicons name="mail-outline" size={24} color="#888" style={styles.inputIcon} />
       </View>
 
-      <Text style={[styles.link, { color: Colors.PRIMARY }]} onPress={() => navigation.goBack()}>
-        Back to Login
-      </Text>
+      <TouchableOpacity style={styles.loginButton} onPress={handleForgetPassword}>
+        <Text style={styles.loginButtonText}>Send Reset Email</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Text style={styles.registerText}>
+          Back to <Text style={styles.registerLink}>Login</Text>
+        </Text>
+      </TouchableOpacity>
+
+      <Toast />
     </View>
   );
 };
 
 export default ForgetPasswordScreen;
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 24 },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 30,
-  },
-  input: {
-    height: 50,
-    borderWidth: 1.5,
-    borderRadius: 12,
-    marginBottom: 15,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    backgroundColor: '#222326', // Bluish-dark input background
-  },
-  buttonWrapper: {
-    marginVertical: 20,
-  },
-  link: {
-    textAlign: 'center',
-    fontSize: 14,
-    marginTop: 10,
-    textDecorationLine: 'underline',
-  },
-});
