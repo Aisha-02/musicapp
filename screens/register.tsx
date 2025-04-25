@@ -58,7 +58,7 @@ const RegisterScreen = ({ navigation }: any) => {
       });
 
       Toast.show({ type: 'success', text1: 'Registration Successful 🎉', text2: 'Please login to continue.' });
-      navigation.navigate('Login');
+      navigation.navigate('CompleteProfile', { uid: userCredential.user.uid });
     } catch (error: any) {
       console.error(error);
       Toast.show({ type: 'error', text1: 'Registration Failed', text2: error.message });

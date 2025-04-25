@@ -1,9 +1,11 @@
+// styles/AuthStyles.ts
 import { StyleSheet } from 'react-native';
+import { Colors } from '../constants/Colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000', // pure black
+    backgroundColor: Colors.background,
     justifyContent: 'center',
     padding: 24,
   },
@@ -20,11 +22,11 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     borderRadius: 10,
-    backgroundColor: '#222326',
+    backgroundColor: Colors.inputBackground,
     paddingLeft: 50,
     paddingRight: 16,
     fontSize: 16,
-    color: '#fff',
+    color: Colors.text,
   },
   inputIcon: {
     position: 'absolute',
@@ -32,23 +34,23 @@ const styles = StyleSheet.create({
     height: 25,
     top: 15,
     left: 16,
-    tintColor: '#888',
+    tintColor: Colors.icon,
   },
   forgetPassword: {
-    color: '#9CA3AF',
+    color: Colors.subText,
     textAlign: 'right',
     marginBottom: 20,
     textDecorationLine: 'underline',
   },
   loginButton: {
-    backgroundColor: '#7F00FF',
+    backgroundColor: Colors.buttonBackground,
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
     marginBottom: 20,
   },
   loginButtonText: {
-    color: '#fff',
+    color: Colors.buttonText,
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -60,18 +62,18 @@ const styles = StyleSheet.create({
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: '#9CA3AF',
+    backgroundColor: Colors.subText,
   },
   orText: {
     marginHorizontal: 10,
-    color: '#9CA3AF',
+    color: Colors.subText,
     fontSize: 14,
   },
   googleButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: '#222326',
+    borderColor: Colors.inputBackground,
     borderWidth: 1,
     paddingVertical: 12,
     borderRadius: 8,
@@ -88,21 +90,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     marginBottom: 30,
-    color: '#fff',
+    color: Colors.text,
   },
-
   googleButtonText: {
     fontSize: 16,
-    color: '#fff',
+    color: Colors.buttonText,
     fontWeight: 'bold',
   },
   registerText: {
     textAlign: 'center',
-    color: '#9CA3AF',
+    color: Colors.subText,
     fontSize: 14,
   },
   registerLink: {
-    color: '#7F00FF',
+    color: Colors.buttonBackground,
     fontWeight: 'bold',
   },
 });
