@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { sendPasswordResetEmail } from 'firebase/auth';
-import auth from '../firebaseconfig.js';
+import app from '../firebaseconfig.js';
 import { Colors } from '../constants/Colors';
 import styles from '../styles/AuthStyles';
 import Toast from 'react-native-toast-message';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { getAuth } from 'firebase/auth';
 
 const ForgetPasswordScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
-
+  const auth = getAuth(app);
   const handleForgetPassword = async () => {
     if (!email.trim()) {
       Toast.show({
