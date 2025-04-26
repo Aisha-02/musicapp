@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { Colors } from '../constants/Colors';
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -77,6 +78,50 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 8,
     textAlign: 'center',
+  },
+  drawerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: '#333',
+    width: width * 0.75,
+    height: '100%',
+    padding: 20,
+    zIndex: 999,
+    elevation: 10,
+  },
+  cancelIcon: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 20,
+  },
+  profileSection: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 10,
+  },
+  userName: {
+    color: Colors.text,
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  menuItem: {
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  menuText: {
+    color: Colors.text,
+    fontSize: 17,
+  },
+  logoutText: {
+    color: '#FF5C5C',
   }
 });
 

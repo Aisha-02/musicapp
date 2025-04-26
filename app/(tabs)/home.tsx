@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { Ionicons } from '@expo/vector-icons'; // for chat icon
+import { Ionicons } from '@expo/vector-icons';
 import app from '../../firebaseconfig';
 import { useNavigation } from '@react-navigation/native';
-import MenuScreen from '@/screens/userMenu';
-
+import MenuScreen from '../../screens/userMenu';
 
 const Home = () => {
   const [userName, setUserName] = useState('');
   const [profilePic, setProfilePic] = useState('');
+  const [showMenu, setShowMenu] = useState(false);
+
   const auth = getAuth(app);
   const db = getFirestore(app);
   const navigation = useNavigation<any>();
@@ -20,10 +21,16 @@ const Home = () => {
       const user = auth.currentUser;
       if (user) {
         const userDoc = await getDoc(doc(db, 'users', user.uid));
+        const prefDoc = await getDoc(doc(db, 'user_preferences', user.uid));
+
         if (userDoc.exists()) {
-          const data = userDoc.data();
-          setUserName(data.username || 'User');
-          setProfilePic(data.profilePic || 'https://i.imgur.com/placeholder.png');
+          const userData = userDoc.data();
+          setUserName(userData.username || 'User');
+        }
+
+        if (prefDoc.exists()) {
+          const prefData = prefDoc.data();
+          setProfilePic(prefData.profilePic || 'https://i.imgur.com/placeholder.png');
         }
       }
     };
@@ -32,30 +39,37 @@ const Home = () => {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <View style={styles.profileContainer}>
-          <Image source={{ uri: profilePic }} style={styles.avatar} />
-          <Text style={styles.greeting}>Hi, {userName}</Text>
-        </View>
-        <TouchableOpacity style={styles.chatIcon}>
-        {/* <Ionicons name="chatbox-ellipses-outline" size={24} color="#fff" /> */}
-          <Ionicons name="chatbubble-ellipses-outline" size={28} color="#fff" />
-        </TouchableOpacity>        
-          {/* Hamburger Icon */}
-          <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
-            <Ionicons name="menu" size={28} color="white" />
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.container}>
+        {/* Top Bar */}
+        <View style={styles.topBar}>
+          <View style={styles.profileContainer}>
+            <Image source={{ uri: profilePic }} style={styles.avatar} />
+            <Text style={styles.greeting}>Hi, {userName}</Text>
+          </View>
+  
+          <TouchableOpacity style={styles.chatIcon}>
+            <Ionicons name="chatbubble-ellipses-outline" size={28} color="#fff" />
           </TouchableOpacity>
-      </View>
-
-      {/* Scrollable content goes here */}
-      <View style={styles.content}>
-        <Text style={styles.text}>scrollable content </Text>
-      </View>
-
-    </ScrollView>
+  
+          <TouchableOpacity onPress={() => setShowMenu(true)} style={{ padding: 10 }}>
+            <Ionicons name="menu" size={30} color="white" />
+          </TouchableOpacity>
+        </View>
+  
+        {/* Scrollable content */}
+        <View style={styles.content}>
+          <Text style={styles.text}>scrollable content</Text>
+        </View>
+      </ScrollView>
+  
+      {/* Show Menu outside the ScrollView */}
+      {showMenu && (
+        <MenuScreen onClose={() => setShowMenu(false)} />
+      )}
+    </View>
   );
+  
 };
 
 export default Home;

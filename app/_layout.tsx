@@ -21,7 +21,6 @@ const AppLayout = () => {
         <Stack.Screen name="CompleteProfile" component={profile} />
         <Stack.Screen name="Forget" component={ForgetPassword} />
         <Stack.Screen name="Home" component={TabLayout} />
-        <Stack.Screen name="Menu" component={MenuScreen} />
       </Stack.Navigator>
   );
 }
