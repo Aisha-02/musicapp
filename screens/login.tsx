@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import auth from '../firebaseconfig';
+import app from '../firebaseconfig';
 import { Colors } from '../constants/Colors';
 import Toast from 'react-native-toast-message';
 import styles from '../styles/AuthStyles'; // 👈 Importing shared styles
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { getAuth } from 'firebase/auth';
 
 const LoginScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setPasswordVisible] = useState(false);
-
+  const auth = getAuth(app);
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
       Toast.show({

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import auth from '../firebaseconfig.js';
+import app from '../firebaseconfig.js';
 import { getFirestore, collection, query, where, getDocs, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { Colors } from '../constants/Colors';
 import Toast from 'react-native-toast-message';
 import styles from '../styles/AuthStyles'; // Use shared style
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { getAuth } from 'firebase/auth';
 
 const RegisterScreen = ({ navigation }: any) => {
   const [userId, setUserId] = useState('');
@@ -17,7 +18,7 @@ const RegisterScreen = ({ navigation }: any) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [isPasswordVisibleconfirm, setPasswordVisibleconfirm] = useState(false);
-
+  const auth = getAuth(app);
   const isEmailValid = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 

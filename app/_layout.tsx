@@ -5,6 +5,7 @@ import RegisterScreen from '../screens/register';
 import ForgetPassword from '../screens/forgetpassword';
 import profile  from '../screens/completeprofile';
 import TabLayout from './(tabs)/TabLayout'; // Tab navigator
+import MenuScreen from '@/screens/userMenu';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +21,7 @@ const AppLayout = () => {
         <Stack.Screen name="CompleteProfile" component={profile} />
         <Stack.Screen name="Forget" component={ForgetPassword} />
         <Stack.Screen name="Home" component={TabLayout} />
-
+        <Stack.Screen name="Menu" component={MenuScreen} />
       </Stack.Navigator>
   );
 }
