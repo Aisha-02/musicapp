@@ -7,6 +7,7 @@ import { Colors } from '../constants/Colors';
 import Toast from 'react-native-toast-message';
 import styles from '../styles/AuthStyles'; // Use shared style
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { getAuth } from 'firebase/auth';
 
 const RegisterScreen = ({ navigation }: any) => {
@@ -156,7 +157,15 @@ const RegisterScreen = ({ navigation }: any) => {
       </View>
 
       <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
-        <Text style={styles.loginButtonText}>REGISTER</Text>
+        <LinearGradient
+        // Adding gradient to the button with 4 shades
+          colors={['#E100FF', '#2575fc', '#1C15ED', '#0544BA']}   
+          locations={[0, 0.4, 0.6, 0.7]} // Adjust the locations for gradient effect
+          start={{ x: 0, y: 1 }}  // Adjust the start and end points for gradient effect
+          end={{ x: 2, y: 3 }} // Adjust the start and end points for gradient effect
+          style={styles.loginButton}>
+          <Text style={styles.loginButtonText}>REGISTER</Text>
+        </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>

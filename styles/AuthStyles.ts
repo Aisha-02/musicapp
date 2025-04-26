@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   loginButton: {
-    backgroundColor: Colors.buttonBackground,
+    width: '100%',
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
