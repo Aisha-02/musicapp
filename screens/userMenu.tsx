@@ -4,6 +4,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
 import app from '../firebaseconfig';
+import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/PrefereneStyles';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 const MenuScreen: React.FC<Props> = ({ onClose }) => {
   const [userName, setUserName] = useState('');
   const [profilePic, setProfilePic] = useState('');
+  const navigation = useNavigation<any>();
   const auth = getAuth(app);
   const db = getFirestore(app);
 
@@ -49,7 +51,9 @@ const MenuScreen: React.FC<Props> = ({ onClose }) => {
   }, []);
 
   const handleLogout = async () => {
+    
     await signOut(auth);
+    navigation.replace('Login'); // Navigate to login screen
     onClose(); // Close menu
   };
 
