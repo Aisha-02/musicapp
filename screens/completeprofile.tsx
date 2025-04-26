@@ -59,7 +59,12 @@ const UserPreferences = ({ route, navigation }: any) => {
                 profilePic: photoURL || '',
             });
 
-            navigation.navigate('Home'); // or wherever next
+            navigation.dispatch(
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Home' }],
+                })
+              )
         } catch (error) {
             console.error('Error saving preferences:', error);
         }
