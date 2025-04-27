@@ -52,7 +52,7 @@ const Home = () => {
             <Ionicons name="chatbubble-ellipses-outline" size={28} color="#fff" />
           </TouchableOpacity>
   
-          <TouchableOpacity onPress={() => setShowMenu(true)} style={{ padding: 10 }}>
+          <TouchableOpacity onPress={() => setShowMenu(prev => !prev)} style={{ padding: 10 }}>
             <Ionicons name="menu" size={30} color="white" />
           </TouchableOpacity>
         </View>

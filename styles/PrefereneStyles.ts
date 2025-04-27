@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
     padding: 20,
-    paddingBottom: 50, // Adjusted padding to ensure space at the bottom for the button
+    paddingBottom: 50,
   },
   title: {
     fontSize: 24,
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
-  
   imagePlaceholder: {
     width: 100,
     height: 100,
@@ -66,29 +65,43 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     overflow: 'hidden',
   },
-  
   image: {
     width: '100%',
     height: '100%',
     borderRadius: 60,
   },
-  
   uploadText: {
     color: Colors.subText,
     fontSize: 14,
     marginTop: 8,
     textAlign: 'center',
   },
-  drawerContainer: {
+
+  /** ------------ MENU SCREEN RELATED ------------- */
+
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)', // semi-transparent black overlay
     position: 'absolute',
     top: 0,
     left: 0,
-    backgroundColor: '#333',
+    right: 0,
+    bottom: 0,
+    zIndex: 999,
+  },
+  drawerContainer: {
     width: width * 0.75,
-    height: '100%',
-    padding: 20,
+    backgroundColor: '#333',
+    position: 'absolute',
+    top: 20,
+    left: 0,
+    height: '100%', // make sure the menu is the full height of the screen
+    paddingTop: 50,
+    paddingHorizontal: 20,
     zIndex: 999,
     elevation: 10,
+    borderRightWidth: 1,
+    borderRightColor: Colors.border,
   },
   cancelIcon: {
     position: 'absolute',
@@ -105,11 +118,17 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     marginBottom: 10,
+    backgroundColor: Colors.inputBackground,
   },
   userName: {
     color: Colors.text,
     fontSize: 20,
     fontWeight: '600',
+  },
+  menuContent: {
+    marginTop: 70, // Push down content so it's below the cancel icon
+    flex: 1,
+    paddingBottom: 50, // Space at the bottom for scrollable menu
   },
   menuItem: {
     paddingVertical: 14,
@@ -122,7 +141,7 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     color: '#FF5C5C',
-  }
+  },
 });
 
 export default styles;
