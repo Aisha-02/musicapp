@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
     width: 150,
     height: 120,
     alignSelf: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
   },
   inputContainer: {
     position: 'relative',
-    marginBottom: 20,
+    marginBottom: 15,
   },
   input: {
     height: 50,
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   registerText: {
+    marginBottom: 30,
     textAlign: 'center',
     color: Colors.subText,
     fontSize: 14,

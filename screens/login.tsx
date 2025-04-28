@@ -66,6 +66,8 @@ const LoginScreen = ({ navigation }: any) => {
         style={styles.logo}
       />
 
+<Text style={styles.header}>Welcome Back 👋</Text>
+
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}

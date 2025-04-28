@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   title: {
+    marginTop: 30,
     fontSize: 24,
     fontWeight: 'bold',
     color: Colors.text,
@@ -17,13 +18,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   chipContainer: {
+    marginTop: 20,
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 10,
   },
   chip: {
     paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     borderRadius: 20,
     backgroundColor: Colors.chipUnselected,
     marginRight: 8,
@@ -31,29 +33,45 @@ const styles = StyleSheet.create({
   },
   chipSelected: {
     backgroundColor: Colors.chipSelected,
+    fontWeight: 'bold',
   },
   chipText: {
     fontSize: 14,
+    fontWeight: '700',
     color: Colors.chipTextUnselected,
   },
   chipTextSelected: {
     color: Colors.chipTextSelected,
   },
+  navButton: {
+    position: 'absolute',
+    bottom : 20,
+    left: 20,
+    transform: [{ translateY: -20 }],
+    backgroundColor: Colors.buttonBackground, // Optional: Set background color
+    borderRadius: 50,
+    padding: 10,
+    zIndex: 1, // Ensures the button is above other elements
+  },
   nextButton: {
-    backgroundColor: Colors.buttonBackground,
-    paddingVertical: 14,
-    borderRadius: 12,
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
+    padding: 15,
+    backgroundColor: Colors.buttonBackground,  // Use your primary color
+    borderRadius: 50,
     alignItems: 'center',
-    marginTop: 10,
+    justifyContent: 'center',
+    zIndex: 1, // Ensures the button is above other elements
   },
   nextButtonText: {
-    color: Colors.buttonText,
+    color: Colors.text,  // Make sure the text is readable
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   imagePickerContainer: {
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 30,
   },
   imagePlaceholder: {
     width: 100,
@@ -66,6 +84,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   image: {
+    marginTop: 20,
     width: '100%',
     height: '100%',
     borderRadius: 60,
@@ -73,7 +92,7 @@ const styles = StyleSheet.create({
   uploadText: {
     color: Colors.subText,
     fontSize: 14,
-    marginTop: 8,
+    marginTop: 20,
     textAlign: 'center',
   },
 
