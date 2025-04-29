@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     paddingLeft: 50,
     paddingRight: 16,
     fontSize: 16,
+    // placeholderTextColor should be passed as a prop to the TextInput component
     color: Colors.text,
   },
   inputIcon: {

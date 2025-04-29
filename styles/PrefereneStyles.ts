@@ -10,11 +10,11 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   title: {
-    marginTop: 30,
-    fontSize: 24,
+    marginTop: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     color: Colors.text,
-    marginBottom: 10,
+    marginBottom: 8,
     textAlign: 'center',
   },
   chipContainer: {
@@ -47,10 +47,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom : 20,
     left: 20,
-    transform: [{ translateY: -20 }],
     backgroundColor: Colors.buttonBackground, // Optional: Set background color
     borderRadius: 50,
-    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 15,
     zIndex: 1, // Ensures the button is above other elements
   },
   nextButton: {
@@ -84,15 +85,26 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   image: {
-    marginTop: 20,
     width: '100%',
     height: '100%',
     borderRadius: 60,
   },
+  input: {
+    height: 40,
+    borderRadius: 10,
+    borderColor: Colors.text,
+    borderBottomWidth: 1,
+    backgroundColor: Colors.inputBackground,
+    paddingLeft: 50,
+    paddingRight: 16,
+    fontSize: 16,
+    fontWeight: '500',
+    color: Colors.text,
+  },
   uploadText: {
     color: Colors.subText,
     fontSize: 14,
-    marginTop: 20,
+    marginTop: 15,
     textAlign: 'center',
   },
 

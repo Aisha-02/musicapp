@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/Colors';
 import styles from '../styles/PrefereneStyles';
 
 // Reusable Question Component
-const Question = ({ title, type, options, selectedValues, onSelect, onPickImage }: any) => {
+const Question = ({ title, type, options, selectedValues, onSelect, onPickImage, onChangeText }: any) => {
   const renderOptions = () => {
     if (type === 'image') {
       // Image Picker (e.g., profile photo)
@@ -39,6 +38,26 @@ const Question = ({ title, type, options, selectedValues, onSelect, onPickImage 
             </TouchableOpacity>
           ))}
         </View>
+      );
+    } else if (type === 'text') {
+      // Text input (e.g., bio, current vibe, pronouns)
+      return (
+        <TextInput
+          style={styles.input}
+          value={selectedValues}
+          onChangeText={onSelect}
+          placeholder="Type here..."
+        />
+      );
+    } else if (type === 'date') {
+      // Date input (e.g., birthday)
+      return (
+        <TextInput
+          style={styles.input}
+          value={selectedValues}
+          onChangeText={onSelect}
+          placeholder="Select a date"
+        />
       );
     }
     return null;

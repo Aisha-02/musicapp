@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-import { ScrollView, TouchableOpacity, Text, View } from 'react-native';
+import { ScrollView, TouchableOpacity, Text, View, TextInput } from 'react-native';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
-import Question from '../components/Question';  // Import the reusable Question component
+import Question from '../components/Question';
 import { Colors } from '../constants/Colors';
 import styles from '../styles/PrefereneStyles';
 
 const vibeOptions = ['Chill AF 🤘', 'Party Animal 🥳', 'Hopeless Romantic 🔥', 'Filmy & Dramatic 🎬', 'Meme Lord 😂', 'Rizzy 😍'];
 const musicOptions = ['Bollywood', 'Indie', 'Hip-Hop/Rap', 'LO-FI', 'Pop', 'Rock', 'Sufi', 'Classical'];
+const connectionVibes = ['Deep conversations', 'Fun and Flirty', 'Just vibing with music', 'Travel buddy', 'Serious relationship', 'Chill friendships'];
+const musicLanguages = ['Hindi', 'English', 'Punjabi', 'Tamil', 'Telugu', 'Marathi', 'Bengali', 'Other'];
+const openToDifferentTaste = ['Hell yes!', 'Maybe, if we vibe otherwise', 'Nah, music taste is everything'];
 
 const CompleteProfile = ({ route, navigation }: any) => {
   const userId = route.params?.uid;
@@ -18,9 +21,17 @@ const CompleteProfile = ({ route, navigation }: any) => {
   const storage = getStorage();
 
   const [currentPage, setCurrentPage] = useState(0);
-  const [vibes, setVibes] = useState<string[]>([]);
-  const [musicTaste, setMusicTaste] = useState<string[]>([]);
   const [profilePic, setProfilePic] = useState<string | null>(null);
+  const [bio, setBio] = useState('');
+  const [currentVibe, setCurrentVibe] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [pronouns, setPronouns] = useState('');
+  const [relationshipStatus, setRelationshipStatus] = useState('');
+  const [vibe, setVibe] = useState('');
+  const [musicTaste, setMusicTaste] = useState<string[]>([]);
+  const [idealConnection, setIdealConnection] = useState('');
+  const [musicLangPref, setMusicLangPref] = useState<string[]>([]);
+  const [openToDifferentMusic, setOpenToDifferentMusic] = useState('');
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -34,37 +45,101 @@ const CompleteProfile = ({ route, navigation }: any) => {
     }
   };
 
-  const questions = [
-    {
-      title: "Upload a Profile Picture",
-      type: 'image',
-      selectedValues: profilePic,
-      onSelect: null,
-      onPickImage: pickImage,
-    },
-    {
-      title: "What’s your vibe like?",
-      type: 'chip',
-      options: vibeOptions,
-      selectedValues: vibes,
-      onSelect: (vibe: string) => toggleSelection(vibe, vibes, setVibes),
-      onPickImage: null,
-    },
-    {
-      title: "What’s your music taste?",
-      type: 'chip',
-      options: musicOptions,
-      selectedValues: musicTaste,
-      onSelect: (music: string) => toggleSelection(music, musicTaste, setMusicTaste),
-      onPickImage: null,
-    },
-  ];
+  const pages = [
+    // Screen 1
+    () => (
+      <View>
+        <Question
+          title="'Upload your vibe pic 📸'"
+          type="image"
+          selectedValues={profilePic}
+          onPickImage={pickImage}
+        />
+        <Question
+          title='Write a short and fun bio ✍️'
+          type='text'
+          selectedValues={bio}
+          onSelect={setBio}
+        />
 
-  // Group questions in pairs (2 questions per page)
-  const groupedQuestions = [];
-  for (let i = 0; i < questions.length; i += 2) {
-    groupedQuestions.push(questions.slice(i, i + 2));
-  }
+        <Question
+          title='Your current vibe is... 🎯'
+          type='text'
+          selectedValues={currentVibe}
+          onSelect={setCurrentVibe}
+        />
+
+        <Question
+          title='When’s your birthday? 🎂'
+          type='date'
+          selectedValues={birthday}
+          onSelect={setBirthday}
+        />
+
+        <Question
+          title='Relationship status 💞'
+          type='text'
+          selectedValues={relationshipStatus}
+          onSelect={setRelationshipStatus}
+        />
+        <Question
+          title="Your pronouns are... 🏳️‍🌈"
+          type="text"
+          selectedValues={pronouns}
+          onSelect={setPronouns}
+        />
+      </View>
+    ),
+    // Screen 2
+    () => (
+      <Question
+        title="Pick one that screams *you* 🌟"
+        type="chip"
+        options={vibeOptions}
+        selectedValues={vibe}
+        onSelect={setVibe}
+      />
+    ),
+    // Screen 3
+    () => (
+      <Question
+        title="Your playlist vibes with...? 🎵"
+        type="chip"
+        options={musicOptions}
+        selectedValues={musicTaste}
+        onSelect={(item: string) => toggleSelection(item, musicTaste, setMusicTaste)}
+      />
+    ),
+    // Screen 4
+    () => (
+      <Question
+        title="What kind of connection are you really vibing with? 💛"
+        type="chip"
+        options={connectionVibes}
+        selectedValues={idealConnection}
+        onSelect={setIdealConnection}
+      />
+    ),
+    // Screen 5
+    () => (
+      <>
+        <Question
+          title="Languages you groove to 🔊"
+          type="chip"
+          options={musicLanguages}
+          selectedValues={musicLangPref}
+          onSelect={(item: string) => toggleSelection(item, musicLangPref, setMusicLangPref)}
+        />
+        <Question
+          title="Would you connect with someone who loves different music? 🎶"
+          type="chip"
+          options={openToDifferentTaste}
+          selectedValues={openToDifferentMusic}
+          onSelect={setOpenToDifferentMusic}
+        />
+      </>
+    ),
+  ];
 
   const toggleSelection = (item: string, list: string[], setter: Function) => {
     if (list.includes(item)) {
@@ -74,23 +149,9 @@ const CompleteProfile = ({ route, navigation }: any) => {
     }
   };
 
-  const handleNext = () => {
-    if (currentPage < groupedQuestions.length - 1) {
-      setCurrentPage(currentPage + 1);
-    } else {
-      handleSubmit();
-    }
-  };
-
-  const handleBack = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
   const handleSubmit = async () => {
     try {
-      let photoURL = null;
+      let photoURL = '';
       if (profilePic) {
         const response = await fetch(profilePic);
         const blob = await response.blob();
@@ -100,11 +161,18 @@ const CompleteProfile = ({ route, navigation }: any) => {
         photoURL = await getDownloadURL(photoRef);
       }
 
-      // Create a new collection 'user_preferences'
       await setDoc(doc(db, 'user_preferences', userId), {
-        vibes,
+        profilePic: photoURL,
+        bio,
+        currentVibe,
+        birthday,
+        pronouns,
+        relationshipStatus,
+        vibe,
         musicTaste,
-        profilePic: photoURL || '',
+        idealConnection,
+        musicLangPref,
+        openToDifferentMusic,
       });
 
       navigation.dispatch(
@@ -120,29 +188,16 @@ const CompleteProfile = ({ route, navigation }: any) => {
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { flexGrow: 1 }]}>
-      {/* Render two questions per page */}
-      {groupedQuestions[currentPage].map((question, index) => (
-        <Question
-          key={index}
-          title={question.title}
-          type={question.type}
-          options={question.options}
-          selectedValues={question.selectedValues}
-          onSelect={question.onSelect}
-          onPickImage={question.onPickImage}
-        />
-      ))}
+      {pages[currentPage]()}
 
-      {/* Back Button (only visible on middle pages) */}
-      {currentPage > 0 && currentPage < groupedQuestions.length - 1 ? (
-        <TouchableOpacity style={styles.navButton} onPress={handleBack}>
+      {currentPage > 0 && (
+        <TouchableOpacity style={styles.navButton} onPress={() => setCurrentPage(currentPage - 1)}>
           <Ionicons name="arrow-back" size={24} color={Colors.icon} />
         </TouchableOpacity>
-      ) : null}
+      )}
 
-      {/* Next Button */}
-      {currentPage < groupedQuestions.length - 1 ? (
-        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+      {currentPage < pages.length - 1 ? (
+        <TouchableOpacity style={styles.nextButton} onPress={() => setCurrentPage(currentPage + 1)}>
           <Ionicons name="arrow-forward" size={24} color={Colors.icon} />
         </TouchableOpacity>
       ) : (
