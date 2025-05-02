@@ -24,18 +24,19 @@ const LoginScreen = ({ navigation }: any) => {
       return;
     }
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       Toast.show({
         type: 'success',
         text1: 'Login Successful 🎉',
         text2: 'Welcome back!',
       });
-      navigation.dispatch(
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Home' }],
-        })
-      )
+      // navigation.dispatch(
+      //   navigation.reset({
+      //     index: 0,
+      //     routes: [{ name: 'Home' }],
+      //   })
+      // )
+      navigation.navigate('CompleteProfile', { uid: userCredential.user.uid });
     } catch (error: any) {
       console.error(error);
       Toast.show({

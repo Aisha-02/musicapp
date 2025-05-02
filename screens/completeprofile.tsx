@@ -6,6 +6,7 @@ import { getFirestore } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import Question from '../components/Question';
+import ProgressBar from '../components/ProgressBar';
 import { Colors } from '../constants/Colors';
 import styles from '../styles/PrefereneStyles';
 
@@ -187,25 +188,52 @@ const CompleteProfile = ({ route, navigation }: any) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, { flexGrow: 1 }]}>
-      {pages[currentPage]()}
-
-      {currentPage > 0 && (
-        <TouchableOpacity style={styles.navButton} onPress={() => setCurrentPage(currentPage - 1)}>
-          <Ionicons name="arrow-back" size={24} color={Colors.icon} />
-        </TouchableOpacity>
-      )}
-
-      {currentPage < pages.length - 1 ? (
-        <TouchableOpacity style={styles.nextButton} onPress={() => setCurrentPage(currentPage + 1)}>
-          <Ionicons name="arrow-forward" size={24} color={Colors.icon} />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.nextButton} onPress={handleSubmit}>
-          <Text style={styles.nextButtonText}>Save Preferences</Text>
-        </TouchableOpacity>
-      )}
-    </ScrollView>
+    <View style={{ flex: 1, backgroundColor: '#000' }}>
+      <ProgressBar current={currentPage} total={pages.length} />
+  
+      <View style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 16,
+      }}>
+        <View style={{
+          backgroundColor: '#fff',
+          borderRadius: 20,
+          padding: 20,
+          width: '100%',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.3,
+          shadowRadius: 6,
+          elevation: 5,
+        }}>
+          {pages[currentPage]()}
+        </View>
+      </View>
+  
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 20,
+      }}>
+        {currentPage > 0 && (
+          <TouchableOpacity onPress={() => setCurrentPage(currentPage - 1)}>
+            <Ionicons name="arrow-back-circle" size={32} color="#fff" />
+          </TouchableOpacity>
+        )}
+  
+        {currentPage < pages.length - 1 ? (
+          <TouchableOpacity onPress={() => setCurrentPage(currentPage + 1)}>
+            <Ionicons name="arrow-forward-circle" size={32} color="#fff" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={handleSubmit} style={ styles.nextButton}>
+            <Text style={styles.nextButtonText}>Save Preferences</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </View>
   );
 };
 
